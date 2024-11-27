@@ -11,10 +11,9 @@ export default function Dropdown({ options, onSelect }) {
   const handleOptionClick = (option) => {
     setSelectedOption(option);
     setIsOpen(false);
-    onSelect(option); // Notify parent component
+    onSelect(option);
   };
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -26,18 +25,27 @@ export default function Dropdown({ options, onSelect }) {
   }, []);
 
   return (
-    <div className="dropdown" ref={dropdownRef}>
-      <div className="dropdown-header" onClick={toggleDropdown}>
+    <div className="relative inline-block w-full" ref={dropdownRef}>
+      <div
+        onClick={toggleDropdown}
+        className="w-[500] p-3 bg-gray-100 border border-gray-300 rounded-md shadow-sm cursor-pointer hover:bg-gray-200"
+      >
         {selectedOption}
-        <span className={`dropdown-arrow ${isOpen ? "open" : ""}`}>▼</span>
+        <span
+          className={`ml-2 inline-block transform transition-transform ${
+            isOpen ? "rotate-180" : "rotate-0"
+          }`}
+        >
+          ▼
+        </span>
       </div>
       {isOpen && (
-        <div className="dropdown-menu">
+        <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg mt-1">
           {options.map((option, index) => (
             <div
               key={index}
-              className="dropdown-item"
               onClick={() => handleOptionClick(option)}
+              className="p-3 hover:bg-gray-200 cursor-pointer transition-all"
             >
               {option}
             </div>
